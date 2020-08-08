@@ -1,0 +1,26 @@
+# API Keys and stuff
+config.json
+
+# Used when running
+guild/
+
+# Already built
+target/
+
+# Test dir (not used)
+src/test/
+
+# Eclipse stuff
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.project
+.classpath
