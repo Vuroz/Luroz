@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 
 import me.vuroz.luroz.manager.LogManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Wasted extends Command {
@@ -33,7 +34,16 @@ public class Wasted extends Command {
 			LogManager.log(Cat.class, 3, e.getMessage());
 			return e.getMessage();
 		}
-		event.getChannel().sendFile(image, "wasted.png").queue();
+		
+		if (event.isFromGuild()) {
+			if (event.getGuild().getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_ATTACH_FILES)) {
+				event.getChannel().sendFile(image, "wasted.png").queue();
+			} else {
+				event.getChannel().sendMessage("\u26A0 I don't have permission to send images in this channel.").queue();
+			}
+		} else {
+			event.getChannel().sendFile(image, "wasted.png").queue();
+		}
 		return null;
 	}
 
