@@ -1,6 +1,7 @@
 package me.vuroz.luroz.command;
 
 import java.util.Map;
+import java.util.Random;
 
 import me.vuroz.luroz.StyleList;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -14,6 +15,7 @@ public class Style extends Command {
 	public Style() {
 		super(false, "Style", "Style your text", "Retypes your text with your preferred style\nAvailable styles are:\n"
 				+ "`circle` -> " + stylize(styles.get("circle"), "circle") + "\n"
+				+ "`leetspeek` -> " + stylize(styles.get("leetspeek"), "leetspeek") + "\n"
 				+ "`old` -> " + stylize(styles.get("fraktur"), "london") + "\n"
 				+ "`retro` -> " + stylize(styles.get("retro"), "retro") + "\n"
 				+ "`small` -> "  + stylize(styles.get("small"), "small") + "\n"
@@ -28,6 +30,14 @@ public class Style extends Command {
 			case "circle":
 			case "circled":
 				text = stylize(styles.get("circle"), text);
+				break;
+			case "1337":
+			case "l33t":
+			case "leet":
+			case "eleet":
+			case "leetspeak":
+			case "leetspeek":
+				text = stylize(styles.get("leetspeek"), text);
 				break;
 			case "old":
 			case "london":
@@ -59,12 +69,54 @@ public class Style extends Command {
 	}
 	
 	private static String stylize(Map<Character, String> style, String text) {
+		if (style == styles.get("leetspeek")) {
+			String newText = "";
+			String[] words = text.split(" ");
+			for (String word : words) {
+				if (word.equalsIgnoreCase("what")) {
+					char w = word.charAt(0);
+					char t = word.charAt(3);
+					
+					boolean capital = Character.isUpperCase(t) ? true : false;
+					
+					char[] middles = { 'a', 'o', 'u' };
+					Random random = new Random();
+					char middle = middles[random.nextInt(3)];
+					
+					if (capital)
+						middle = Character.toUpperCase(middle);
+					
+					word = w + middle + "t";
+				}
+				
+				if (word.startsWith("own")) {
+					word = "pwn" + word.substring(3);
+				}
+				
+				word = word.endsWith("and") || word.endsWith("ant") ? replaceLast(word, "&", 3) : word.endsWith("anned") ? replaceLast(word, "&", 5) : word;				
+				word = word.endsWith("cker") ? replaceLast(word, "xor", 4) : word;
+				
+				if (word.endsWith("er") || word.endsWith("or")) {
+					if (word.equalsIgnoreCase("or"))
+						continue;
+					word = replaceLast(word, "xor", 2);
+				}
+				
+				newText += word + " ";
+			}
+			text = newText;
+		}
+		
 		for (Map.Entry<Character, String> entry : style.entrySet()) {
 			char letter = entry.getKey();
 			String replacement = entry.getValue();
 			text = text.replace(Character.toString(letter), replacement);
 		}
 		return text;
+	}
+	
+	private static String replaceLast(String original, String replacement, int removalLength) {
+		return original.substring(0, original.length() - removalLength) + replacement;
 	}
 
 }

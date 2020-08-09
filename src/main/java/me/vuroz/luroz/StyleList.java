@@ -432,6 +432,24 @@ public class StyleList {
 		small.put(wU, "\u1D42");
 
 		styles.put("small", small);
+		
+		Map<Character, String> leetspeek = new HashMap<Character, String>();
+		leetspeek.put(o, "0");
+		leetspeek.put(l, "1");
+		leetspeek.put(e, "3");
+		leetspeek.put(a, "4");
+		leetspeek.put(s, "5");
+		leetspeek.put(g, "6");
+		leetspeek.put(t, "7");
+		leetspeek.put(oU, "0");
+		leetspeek.put(lU, "1");
+		leetspeek.put(eU, "3");
+		leetspeek.put(aU, "4");
+		leetspeek.put(sU, "5");
+		leetspeek.put(gU, "6");
+		leetspeek.put(tU, "7");
+		
+		styles.put("leetspeek", leetspeek);
 	}
 
 }
