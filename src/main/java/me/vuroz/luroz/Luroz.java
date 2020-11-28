@@ -11,6 +11,7 @@ import javax.security.auth.login.LoginException;
 
 import net.dv8tion.jda.api.GatewayEncoding;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.json.JSONObject;
 
 import me.vuroz.luroz.command.Birb;
@@ -46,6 +47,7 @@ public class Luroz {
 				GatewayIntent.DIRECT_MESSAGE_TYPING,
 				GatewayIntent.GUILD_MESSAGES,
 				GatewayIntent.GUILD_MESSAGE_TYPING)
+				.disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE)
 				.addEventListeners(new ReadyListener(), new GuildJoinListener(), new MessageListener(), new TerminalHandler())
 				.setActivity(Activity.watching("you"))
 				.build();
