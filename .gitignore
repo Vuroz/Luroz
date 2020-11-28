@@ -10,6 +10,12 @@ target/
 # Test dir (not used)
 src/test/
 
+# IntelliJ stuff
+/.idea/
+*.iml
+*.ipr
+*.iws
+
 # Eclipse stuff
 .metadata
 bin/

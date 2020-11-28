@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.user.UserTypingEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class TerminalHandler extends ListenerAdapter {
@@ -81,6 +82,20 @@ public class TerminalHandler extends ListenerAdapter {
 	private static String watchType = "user";
 	private static String watchChannel = "363398068164362241"; // Watch bot creator when first starting
 
+	private static void watch(String[] arguments) {
+		if (arguments[0].equals("user")) {
+			watchType = "user";
+			watchChannel = arguments[1];
+			LogManager.log(TerminalHandler.class, 1, "Now watching {}", arguments[1]);
+		} else if (arguments[0].equals("guild")) {
+			watchType = "guild";
+			watchChannel = arguments[1];
+			LogManager.log(TerminalHandler.class, 1, "Now watching {}", arguments[1]);
+		} else {
+			LogManager.log(TerminalHandler.class, 3, "'{}' is not a valid channel type", arguments[0]);
+		}
+	}
+
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		if (watchType.equals("user")) {
@@ -94,17 +109,16 @@ public class TerminalHandler extends ListenerAdapter {
 		}
 	}
 
-	private static void watch(String[] arguments) {
-		if (arguments[0].equals("user")) {
-			watchType = "user";
-			watchChannel = arguments[1];
-			LogManager.log(TerminalHandler.class, 1, "Now watching {}", arguments[1]);
-		} else if (arguments[0].equals("guild")) {
-			watchType = "guild";
-			watchChannel = arguments[1];
-			LogManager.log(TerminalHandler.class, 1, "Now watching {}", arguments[1]);
-		} else {
-			LogManager.log(TerminalHandler.class, 3, "'{}' is not a valid channel type", arguments[0]);
+	@Override
+	public void onUserTyping(UserTypingEvent event) {
+		if (watchType.equals("user")) {
+			if (event.getUser().getId().equals(watchChannel)) {
+				LogManager.log(TerminalHandler.class, 1, "{} is typing...", event.getUser().getName());
+			}
+		} else if (watchType.equals("guild")) {
+			if (event.getChannel().getId().equals(watchChannel)) {
+				LogManager.log(TerminalHandler.class, 1, "{} is typing in channel '{}' in guild '{}'", event.getUser().getName(), event.getChannel().getName(), event.getGuild().getName());
+			}
 		}
 	}
 

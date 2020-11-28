@@ -3,11 +3,14 @@ package me.vuroz.luroz;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.security.auth.login.LoginException;
 
+import net.dv8tion.jda.api.GatewayEncoding;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.json.JSONObject;
 
 import me.vuroz.luroz.command.Birb;
@@ -38,7 +41,11 @@ public class Luroz {
 	public static Map<String, Command> commands = new TreeMap<String, Command>();
 
 	private Luroz() throws LoginException {
-		JDABuilder.createDefault(getToken())
+		JDABuilder.createDefault(getToken(),
+				GatewayIntent.DIRECT_MESSAGES,
+				GatewayIntent.DIRECT_MESSAGE_TYPING,
+				GatewayIntent.GUILD_MESSAGES,
+				GatewayIntent.GUILD_MESSAGE_TYPING)
 				.addEventListeners(new ReadyListener(), new GuildJoinListener(), new MessageListener(), new TerminalHandler())
 				.setActivity(Activity.watching("you"))
 				.build();
